@@ -10,4 +10,4 @@ create table secondnf_t2 as
 	from firstnf_pokemon_data;
 
 
--- drop table firstnf_pokemon_data;
+drop table firstnf_pokemon_data;

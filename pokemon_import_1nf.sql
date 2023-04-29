@@ -25,6 +25,6 @@ select firstnf.*, first_temp.*
 from firstnf
 join first_temp on first_temp.name=firstnf.name;
 
--- drop table imported_pokemon_data;
--- drop table firstnf;
--- drop table first_temp;
+drop table imported_pokemon_data;
+drop table firstnf;
+drop table first_temp;
