@@ -1,3 +1,10 @@
+-- Disclaimer: I do not know a ton about Pokemon, but this is
+-- based off of basic knowledge and certain assumptions
+
+-- creates our first 3NF table, where the columns are categories
+-- of Pokemon that hold for all Pokemon of a specific name (primary key)
+-- For example, the pokedex_number, generation, and legendary status
+-- will not change within a specific Pokemon's existence (ignoring evolutions)
 create table thirdnf_set (
 	name text,
 	base_egg_steps text,
@@ -14,6 +21,7 @@ create table thirdnf_set (
 	primary key (name)
 );
 
+-- inserts each category's respective information from the appropriate 2NF table
 insert into thirdnf_set
 	select 
 		name,
@@ -30,6 +38,11 @@ insert into thirdnf_set
 		type2
 	from secondnf_t2;
 
+-- creates our second 3NF table, where the columns are categories
+-- of Pokemon that might change within different Pokemon of the same species
+-- For example, you might catch a heavier (weight_kg) Pikachu on one occassion, 
+-- or a lighter Pikachu on another
+-- In other words, this data depends on that specific catch
 create table thirdnf_change (
 	name text,
 	attack text,
@@ -44,6 +57,7 @@ create table thirdnf_change (
 	FOREIGN key (name) references thirdnf_set (name)
 );
 
+-- Inserts each category's respective information from the appropriate 2NF table
 insert into thirdnf_change
 	select
 		name,
@@ -58,11 +72,15 @@ insert into thirdnf_change
 		weight_kg
 	from secondnf_t2;
 	
-
+-- creates our third 3NF table, which is based off of types, attack, defense,
+-- and against_types, which all greatly impact or are impacted by the opposing
+-- Pokemon's type.
 create table thirdnf_types (
 	name text,
 	type1 text,
 	type2 text,
+    attack text,
+    defense text, 
 	against_bug text,
 	against_dark text,
 	against_dragon text,
@@ -84,11 +102,14 @@ create table thirdnf_types (
 	primary key (name)
 );
 
+-- Inserts each category's respective information from the appropriate 2NF table
 insert into thirdnf_types
 	select
 		name,
 		type1,
 		type2,
+        attack,
+        defense,
 		against_bug,
 		against_dark,
 		against_dragon,
@@ -108,3 +129,6 @@ insert into thirdnf_types
 		against_steel,
 		against_water
 	from secondnf_t2
+
+drop table secondnf_t1;
+drop table secondnf_t2;
